@@ -7,6 +7,12 @@ const app = express();
 app.use(cors({ origin: "http://127.0.0.1:5173" }));
 app.use(express.json());
 
+app.get("/creators", async (req, res) => {
+  const response = await pool.query("SELECT * FROM creators");
+
+  res.json(response.rows);
+});
+
 app.post("/assets", async (req, res) => {
   console.log(req.body);
 
