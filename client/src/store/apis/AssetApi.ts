@@ -14,14 +14,34 @@ interface AssetResponse {
     assets: Asset[];
 }
 
+export interface Creator {
+
+    id: number;
+    address: string;
+    name: string;
+
+}
+
+export interface CreatorsResponse {
+    creators: Creator[];
+}
+
+//Dev only
+const pause = (duration: number) => new Promise((resolve) => { setTimeout(resolve, duration) })
+
 
 export const pgApi = createApi({
-    reducerPath: 'algoExplorerApi',
+    reducerPath: 'pgApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8000/',
     }),
     endpoints(builder) {
         return {
+
+            getCreators: builder.query<CreatorsResponse, string>({
+                query: () => { return { url: '/creators' } }
+            }),
+
             getAsset: builder.query<AssetResponse, string>({
                 query: (assetId: String) => { return { url: `/assets` } },
             }),
@@ -54,4 +74,4 @@ export const algoExplorerApi = createApi({
 });
 
 export const { useGetAssetQuery } = algoExplorerApi;
-export const { usePostAssetMutation } = pgApi;
+export const { usePostAssetMutation, useGetCreatorsQuery } = pgApi;
